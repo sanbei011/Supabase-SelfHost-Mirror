@@ -8,7 +8,8 @@ on:
 jobs:
   push_docker_folder:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write  
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -30,7 +31,6 @@ jobs:
     - name: Push changes to mirror branch
       uses: ad-m/github-push-action@v0.8.0
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: mirror
         force: true
         directory: supabase/docker
