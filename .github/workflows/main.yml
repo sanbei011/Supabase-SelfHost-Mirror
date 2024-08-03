@@ -1,0 +1,34 @@
+name: Supabase-Mirror
+
+on:
+  schedule:
+    - cron: '0 0 * * 5' # 每周五的0:00
+  workflow_dispatch:
+
+jobs:
+  push_docker_folder:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Clone supabase repository
+      run: |
+        git clone --depth 1 https://github.com/supabase/supabase
+        cd supabase/docker
+
+    - name: Copy and remove .env.example
+      run: |
+        cp .env.example .env
+        rm .env.example
+
+    - name: Push changes to mirror branch
+      uses: ad-m/github-push-action@v0.8.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: mirror
+        force: true
+        directory: supabase/docker
