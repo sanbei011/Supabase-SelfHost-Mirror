@@ -15,15 +15,17 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Clone supabase repository
+    - name: Clone supabase repository and prepare files
       run: |
         git clone --depth 1 https://github.com/supabase/supabase
         cd supabase/docker
-
-    - name: Copy and remove .env.example
-      run: |
-        cp .env.example .env
-        rm .env.example
+        if [ -f .env.example ]; then
+          cp .env.example .env
+          echo ".env.example found and copied to .env"
+        else
+          echo ".env.example not found in supabase/docker"
+          ls -la  # 列出目录内容以便调试
+        fi
 
     - name: Push changes to mirror branch
       uses: ad-m/github-push-action@v0.8.0
