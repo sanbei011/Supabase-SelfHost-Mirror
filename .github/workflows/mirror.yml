@@ -17,15 +17,11 @@ jobs:
 
     - name: Clone supabase repository and prepare files
       run: |
-        set -e  # 确保脚本遇到错误时退出
         git clone --depth 1 https://github.com/supabase/supabase
         cd supabase/docker
         if [ -f .env.example ]; then
           cp .env.example .env
           echo ".env.example found and copied to .env"
-          rm .env.example
-        else
-          echo ".env.example not found in supabase/docker"
           ls -la  # 列出目录内容以便调试
         fi
 
