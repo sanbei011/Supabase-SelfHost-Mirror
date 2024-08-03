@@ -6,13 +6,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  push_docker_folder:
+  push-supabase-docker-mirror:
+    permissions:
+      contents: write
+      
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
 
     - name: Clone supabase repository and prepare files
       run: |
@@ -22,6 +23,7 @@ jobs:
         if [ -f .env.example ]; then
           cp .env.example .env
           echo ".env.example found and copied to .env"
+          rm .env.example
         else
           echo ".env.example not found in supabase/docker"
           ls -la  # 列出目录内容以便调试
