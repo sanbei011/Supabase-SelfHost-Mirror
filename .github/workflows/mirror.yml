@@ -26,11 +26,11 @@ jobs:
         else
           echo ".env.example not found in supabase/docker"
           ls -la  # 列出目录内容以便调试
-        fi
 
-    - name: Push changes to mirror branch
-      uses: ad-m/github-push-action@v0.8.0
+    - name: Push docker folder to mirror branch
+      uses: crazy-max/ghaction-github-pages@v4
       with:
-        branch: mirror
-        force: true
-        directory: supabase/docker
+        target_branch: mirror
+        build_dir: supabase/docker
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
